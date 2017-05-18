@@ -1,19 +1,28 @@
 package tree;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class TreeManager {
 
 	private Node root;
 
-	public TreeManager() {
+	private Map<String, Node> headMap;
 
+	public TreeManager() {
+		headMap = new HashMap<String, Node>();
 	}
 
-	public Node addEntry(String id) {
+	public void addEntry(List<String> ids) {
+
 		if (root == null) {
-			root = new Node(id);
-		} else {
-			root.addEntry(id);
+			root = new Node(ids);
 		}
-		return null;
+		List<Node> path = root.addEntry(ids);
+	}
+
+	public void printTree() {
+		root.print();
 	}
 }

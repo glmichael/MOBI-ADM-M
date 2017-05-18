@@ -9,10 +9,14 @@ public class Node {
 	private int count;
 	private List<Node> children;
 
-	public Node(String id) {
-		this.id = id;
+	public Node(List<String> ids) {
+		System.out.println("Creating " + ids);
+		// init this tree
+		this.id = ids.get(0);
 		this.children = new ArrayList<Node>();
-		this.count = 1;
+		this.count = 0;
+		// this.addEntry(ids);
+
 	}
 
 	public String getId() {
@@ -39,18 +43,49 @@ public class Node {
 		return this.children;
 	}
 
-	public Node addEntry(String id) {
-		if (this.id.equals(id)) {
+	public List<Node> addEntry(List<String> ids) {
+		System.out.println("Adding" + ids);
+		String firstId = ids.get(0);
+		// this node has id
+		if (this.id.equals(firstId)) {
 			this.count++;
-			return this;
-		} else {
-			if (children.isEmpty()) {
-				Node n = new Node(id);
-				children.add(n);
-				return n;
+			ids.remove(0);
+		}
+		// stop, if empty
+		if (ids.isEmpty()) {
+			return null;
+		}
+		// there are children
+		if (!children.isEmpty()) {
+			// search for id in children
+			for (Node n : children) {
+				if (n.isId(ids)) {
+					return n.addEntry(ids);
+				}
 			}
 		}
-		return null;
+		// no children or id is not in children
+		Node node = new Node(ids);
+		children.add(node);
+		return node.addEntry(ids);
+
+	}
+
+	public boolean isId(List<String> ids) {
+		return this.id.equals(ids.get(0));
+	}
+
+	public void print() {
+		System.out.print("(" + id + ", " + count + ")[");
+		for (Node node : children) {
+			node.print();
+		}
+		System.out.print("]");
+	}
+
+	@Override
+	public String toString() {
+		return id.toString();
 	}
 
 }
