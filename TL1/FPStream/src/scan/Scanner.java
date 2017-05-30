@@ -1,11 +1,14 @@
 package scan;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.TreeMap;
 
 public class Scanner {
 
+	// minimum support
 	Integer xi;
 
 	public Scanner(Integer xi) {
@@ -18,19 +21,26 @@ public class Scanner {
 		for (int i = 0; i < items.length; i++) {
 			if (map.containsKey(items[i])) {
 				Integer count = map.get(items[i]);
+				count = count + 1;
 				map.put(items[i], count);
 			} else {
 				map.put(items[i], 1);
 			}
 		}
-
-		String[] ret = new String[map.keySet().size()];
-
-		for (String key : map.keySet()) {
-			System.out.println(key);
+		
+		Iterator<String> iterator = map.keySet().iterator();
+		
+		while(iterator.hasNext()){
+			if (map.get(iterator.next()) < xi) {
+				iterator.remove();
+			}
 		}
+		
+		TreeMap sorted = sortMapByValue(map);
+		
+		String[] ret = (String[]) sorted.keySet().toArray(new String[sorted.keySet().size()]);
 
-		return null;
+		return ret;
 	}
 
 	// http://www.programcreek.com/2013/03/java-sort-map-by-value/
@@ -60,14 +70,6 @@ public class Scanner {
 				return 1;
 			}
 		}
-	}
-
-	public static void main(String[] args) {
-		String[] ret = new Scanner(0).scan("23 34 54 65 76 876 4353");
-		for (int i = 0; i < ret.length; i++) {
-			System.out.println(ret[i]);
-		}
-
 	}
 
 }
