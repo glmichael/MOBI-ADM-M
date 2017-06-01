@@ -77,17 +77,18 @@ public class Node {
 		node.addTransaction(ids, path);
 
 	}
+
 	public boolean isId(List<String> ids) {
 		return this.id.equals(ids.get(0));
 	}
 
 	public void print(int layer) {
 		String indent = String.join("", Collections.nCopies(layer, "  "));
-		System.out.println(indent + "(" + id + ", " + count + ")[");
+		System.out.println(indent + "[" + id + ", " + count + "]");
 		for (Node node : children) {
 			node.print(layer + 1);
 		}
-		System.out.println(indent + "]");
+		// System.out.println(indent + "]");
 	}
 
 	@Override
